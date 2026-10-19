@@ -181,4 +181,16 @@ plt.subplot(2,2,3),plt.imshow(sobely, cmap='gray')
 plt.title('Sobel Y')
 plt.show()
 """
+"""
+blur=cv.GaussianBlur(img1, (5, 5), 0)
+canny=cv.Canny(blur, 50, 150)
+while True:
+    cv.imshow("blurred", blur)
+    cv.imshow("canny", canny)
+    if cv.waitKey(1) & 0xFF == ord('q'):
+        break
+cv.DestroyAllWindows()
+"""
+
+
 
