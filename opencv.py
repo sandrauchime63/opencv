@@ -1,5 +1,8 @@
 import cv2 as cv
 import numpy as np
+import matplotlib.pyplot as plt
+
+
 img1=cv.imread('1112670651724157450.jpeg')
 img2=cv.imread('img2.jpeg')
 assert img1 is not None, "file could not be read, check with os.path.exists()"
@@ -88,6 +91,7 @@ t = (e2 - e1)/cv.getTickFrequency()
 
 print(cv.useOptimized())
 """
+"""
 cap=cv.VideoCapture(0)
 if not cap.isOpened():
     print("camera not opened successfully.")
@@ -118,9 +122,63 @@ while True:
 
     if cv.waitKey(1) & 0xFF==ord('q'):
         break
-
-
-
 cap.release()
+"""
+
+"""
+shape=cv.resize(img1, None, fx=2, fy=2, interpolation=cv.INTER_CUBIC)
+
+while True:
+    cv.imshow('resized image', shape)
+    cv.imshow('normal', img1)
+    if cv.waitKey(1) & 0xFF==ord('q'):
+        break
+
 cv.destroyAllWindows()
+"""
+"""
+live=cv.VideoCapture(0)
+if not live.isOpened():
+    print('could not open webcam')
+while True:
+    ret, frame=live.read()
+    if not ret:
+        print('could not read frame')
+        break
+    blurred_frame = cv.GaussianBlur(frame, (15, 15), 0)
+    #cv.imshow('blurred', blurred_frame)
+    hsv=cv.cvtColor(blurred_frame, cv.COLOR_BGR2HSV)
+    lower_red1 = np.array([0, 100, 100])
+    upper_red1 = np.array([10, 255, 255])
+    
+    
+    lower_red2 = np.array([170, 100, 100])
+    upper_red2 = np.array([179, 255, 255])
+
+    mask1 = cv.inRange(hsv, lower_red1, upper_red1)
+    mask2 = cv.inRange(hsv, lower_red2, upper_red2)
+    mask = cv.bitwise_or(mask1, mask2)
+    res=cv.bitwise_and(blurred_frame, blurred_frame, mask=mask)
+    
+    cv.imshow('live', frame)
+    cv.imshow('mask', mask)
+    cv.imshow('res', res)
+    if cv.waitKey(1) & 0xFF==ord('q'):
+        break
+cv.destroyAllWindows()
+
+
+"""
+"""
+laplacian=cv.laplacian(img1, cv.CV_64F)
+sobelx=cv.Sobel(img1, cv.CV_64F, 1, 0, ksize=5)
+sobely=cv.Sobel(img1, cv.CV_64F, 0, 1, ksize=5)
+plt.subplot(2,2,1),plt.imshow(laplacian, cmap='gray')
+plt.title('Laplacian')
+plt.subplot(2,2,2),plt.imshow(sobelx, cmap='gray')
+plt.title('Sobel X')
+plt.subplot(2,2,3),plt.imshow(sobely, cmap='gray')
+plt.title('Sobel Y')
+plt.show()
+"""
 
