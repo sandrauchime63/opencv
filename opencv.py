@@ -191,6 +191,23 @@ while True:
         break
 cv.DestroyAllWindows()
 """
+"""
+canny=cv.Canny(img1, 100, 100)
+img1blur=cv.GaussianBlur(img1, (5, 5), 0)
+laplacian=cv.Laplacian(img1blur, cv.CV_64F, ksize=5)
+sobelx=cv.Sobel(img1, cv.CV_64F, 1, 0, ksize=5)
+sobely=cv.Sobel(img1, cv.CV_64F, 0, 1, ksize=5)
+while True:
+    cv.imshow('canny', canny)
+    cv.imshow('original', img1)
+    cv.imshow('laplacian', laplacian)
+    cv.imshow('sobelx', sobelx)
+    cv.imshow('sobely', sobely)
+    if ord('q')==cv.waitKey(1) & 0xFF:
+        break
+cv.destroyAllWindows()
+"""
+
 
 
 
