@@ -207,7 +207,25 @@ while True:
         break
 cv.destroyAllWindows()
 """
-
-
+live=cv.VideoCapture(0)
+if not live.isOpened():
+    print("couldn't open the camera")
+while True:
+    ret, frame=live.read()
+    if not ret:
+        print("couldn't read the frame")
+        break
+    togray=cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+    ret, threshold=cv.threshold(togray, 127, 255, 0)
+    contours, heirarchy=cv.findContours(threshold, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    #print(len(contours))
+    cv.imshow('gray', togray)
+    cv.imshow('threshold', threshold)
+    cv.drawContours(frame, contours, -1, (0, 255, 0), 2)
+    cv.imshow('contours', frame)
+    if ord('q')==cv.waitKey(1) & 0xFF:
+        break
+live.release()
+cv.destroyAllWindows()
 
 
