@@ -207,6 +207,7 @@ while True:
         break
 cv.destroyAllWindows()
 """
+"""
 live=cv.VideoCapture(0)
 if not live.isOpened():
     print("couldn't open the camera")
@@ -227,5 +228,35 @@ while True:
         break
 live.release()
 cv.destroyAllWindows()
+"""
+"""
+gray=cv.cvtColor(img1, cv.COLOR_BGR2GRAY)
+ret, thresh=cv.threshold(gray, 125, 225, 0)
+contours, heirarchy=cv.findContours(thresh, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+
+for contour in contours:
+    moment=cv.moments(contour)
+    if moment['m00'] > 0:
+        cx=int(moment['m10']/moment['m00'])
+        cy=int(moment['m01']/moment['m00'])
+    epsilon=cv.arcLength(contour, True)
+    approx=cv.approxPolyDP(contour, 0.02*epsilon, True)
+    #check convexity
+    isConvex=cv.isContourConvex(contour)
+    hull=cv.convexHull(contour, returnPoints=False)
+    defects=cv.convexityDefects(contour, hull)
+
+while 1:
+    cv.drawContours(img1, contours, -1, (0, 255, 0), 2)
+    cv.imshow('contours', img1)
+    if ord('q')==cv.waitKey(1) & 0xFF:
+        break
+cv.destroyAllWindows()
+"""
+
+
+
+
+
 
 
